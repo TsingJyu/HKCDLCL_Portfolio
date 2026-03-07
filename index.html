@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-HK" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>香港嶺先文化傳播有限公司 | HKCDLCL</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts: Noto Serif TC (繁體中文襯線 - 官方感) & Inter (現代無襯線 - 活力感) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', '"Playfair Display"', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        // 更明亮、更有活力的亮金色
+                        primary: '#E8B923',
+                        primaryHover: '#FDE047',
+                        primaryDark: '#C99A1C',
+                        // 提亮後的暖深色背景，不再是純黑，顯得更有活力和呼吸感
+                        bgDark: '#1A1816',
+                        bgCard: '#24211D',
+                        textMain: '#F8F6F0',
+                        textMuted: '#B3ACA0'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1A1816;
+            color: #F8F6F0;
+            /* 增加一個非常微弱的背景光暈，提升活力 */
+            background-image: radial-gradient(circle at 50% 0%, #2A241A 0%, transparent 70%);
+        }
+        
+        /* 品牌特色滾動條 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A1816; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E8B923; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FDE047; 
+        }
+
+        /* 滾動淡入動畫基礎類 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 圖片電影感懸停效果（稍微提亮初始狀態以增加活力） */
+        .cinematic-img {
+            transition: transform 0.7s ease, filter 0.7s ease;
+            filter: brightness(0.9) contrast(1.05) grayscale(10%);
+        }
+        .img-container:hover .cinematic-img {
+            transform: scale(1.03);
+            filter: brightness(1.1) contrast(1) grayscale(0%);
+        }
+
+        /* 膠片邊框修飾 (保留原版設計) */
+        .film-border {
+            border-top: 1px solid rgba(232, 185, 35, 0.15);
+            border-bottom: 1px solid rgba(232, 185, 35, 0.15);
+        }
+
+        /* 裝飾性線條 */
+        .gold-divider {
+            height: 3px;
+            background: linear-gradient(90deg, #E8B923 0%, transparent 100%);
+            border-radius: 2px;
+        }
+        
+        .gold-border-hover {
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+        .gold-border-hover:hover {
+            border-color: #E8B923;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-primary selection:text-black">
+
+    <!-- 頂部導航 -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 backdrop-blur-md bg-bgDark/80 border-b border-primary/20" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo 區域 -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="flex items-center justify-center transition-transform group-hover:scale-105">
+                    <img src="./HKCDLCL Introduction.png" alt="香港嶺先文化傳播有限公司 Logo" class="h-12 md:h-16 object-contain">
+                </div>
+            </a>
+            
+            <!-- 桌面端菜單 -->
+            <div class="space-x-8 text-sm tracking-widest font-medium hidden md:block">
+                <a href="#about" class="hover:text-primary text-textMain transition-colors">關於我們</a>
+                <a href="#services" class="hover:text-primary text-textMain transition-colors">核心業務</a>
+                <a href="#work" class="hover:text-primary text-textMain transition-colors">重點項目</a>
+                <a href="#contact" class="hover:text-bgDark bg-primary text-bgDark px-5 py-2.5 rounded hover:bg-primaryHover transition-colors font-bold shadow-lg shadow-primary/20">聯絡我們</a>
+            </div>
+            
+            <!-- 移動端菜單按鈕 -->
+            <button class="md:hidden text-primary focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主視覺 / Hero Section -->
+    <header class="h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
+        <!-- 背景裝飾：更明亮的疊加層 -->
+        <div class="absolute inset-0 z-0 opacity-25 bg-[url('https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?q=80&w=2071&auto=format&fit=crop')] bg-cover bg-center mix-blend-screen"></div>
+        <div class="absolute inset-0 z-0 bg-gradient-to-t from-bgDark via-bgDark/70 to-bgDark/40"></div>
+        
+        <div class="reveal z-10 flex flex-col items-center mt-12 w-full px-4">
+            <h1 class="text-white font-serif text-3xl md:text-5xl lg:text-6xl tracking-[0.1em] md:tracking-[0.15em] mb-4 drop-shadow-lg text-center font-bold">香港嶺先文化傳播有限公司</h1>
+            <span class="text-primary font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase text-[10px] md:text-xs mb-10 drop-shadow-md bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20 text-center">Hong Kong Cultural Dissemination Leading Co., Ltd</span>
+            
+            <div class="max-w-3xl mx-auto bg-black/40 backdrop-blur-md border border-white/10 hover:border-primary/30 p-6 md:p-8 rounded-2xl shadow-2xl text-center transition-colors duration-500 relative group">
+                <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                <p class="text-textMain text-sm md:text-base tracking-widest leading-loose relative z-10">
+                    <span class="text-primary font-bold block mb-2 text-base md:text-lg tracking-[0.2em]">融合科技與人文 · 驅動創新傳播。</span>
+                    作為文化創意服務商，我們專注提供一站式解決方案，<br class="hidden md:block">
+                    用新媒體語言講好當代文化故事，重塑機構與品牌在數字時代的身份表達。
+                </p>
+            </div>
+            
+            <a href="#work" class="mt-12 inline-flex items-center gap-2 bg-primary text-bgDark hover:bg-primaryHover px-8 py-3.5 rounded-full transition-all duration-300 tracking-widest text-sm font-bold group shadow-[0_0_20px_rgba(232,185,35,0.3)] hover:shadow-[0_0_30px_rgba(253,224,71,0.5)] transform hover:-translate-y-1">
+                探索案例庫
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+        </div>
+        
+        <!-- 向下滾動提示 -->
+        <div class="absolute bottom-10 animate-bounce text-primary z-10 bg-bgDark/50 p-2 rounded-full backdrop-blur-md">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <!-- 關於我們 / About Us -->
+    <section id="about" class="max-w-7xl mx-auto px-6 py-24 relative">
+        <div class="absolute right-0 top-10 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div class="lg:col-span-5 reveal">
+                <div class="gold-divider w-20 mb-6"></div>
+                <h2 class="font-serif text-4xl md:text-5xl text-white mb-4">關於我們</h2>
+                <span class="text-primary tracking-widest uppercase text-sm mb-8 block font-bold">About Us</span>
+                <!-- 移除 text-justify，增加 pr 留白 -->
+                <p class="text-textMain leading-loose font-light text-base md:text-lg pr-4 md:pr-10">
+                    香港嶺先文化傳播有限公司是一間由嶺南大學創業計劃孵化的校友企業。我們立足香港，輻射大灣區，致力於將深厚的人文素養與前沿的數字科技相結合。
+                </p>
+                <p class="text-textMain leading-loose font-light mt-4 text-base md:text-lg pr-4 md:pr-10">
+                    作為一家具備學術背景與商業敏銳度的綜合性文化傳播機構，我們擁有一支由香港及內地頂尖高校校友組成的創意團隊。我們不只是內容的生產者，更是<span class="text-primary font-medium">文化的翻譯者</span>。
+                </p>
+                <!-- 大幅增加右側留白 (pr-8 md:pr-16) -->
+                <p class="text-textMain leading-loose font-light mt-6 text-base md:text-lg border-l-4 border-primary/30 pl-5 pr-8 md:pr-16 bg-primary/5 py-4 rounded-r shadow-sm">
+                    多年來，我們與<span class="text-primary font-medium">香港大學、北京大學、復旦大學、嶺南大學、哈佛大學</span>等頂尖學府及多個國際組織保持緊密合作，成功落地多項高規格的文化與學術項目。
+                </p>
+            </div>
+            <div class="lg:col-span-7 grid grid-cols-2 gap-4 reveal">
+                <div class="overflow-hidden rounded-lg bg-bgCard aspect-square img-container border border-primary/20 shadow-lg">
+                    <img src="./微信圖片_20260118174611_335_98 (1).jpg" alt="團隊活動合影" class="w-full h-full object-cover cinematic-img">
+                </div>
+                <div class="overflow-hidden rounded-lg bg-bgCard aspect-square img-container border border-primary/20 mt-12 shadow-lg">
+                    <img src="./484499286_654774797502539_1496066060289084575_n.jpg" alt="學術講座現場" class="w-full h-full object-cover cinematic-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心業務 / Core Services -->
+    <section id="services" class="bg-bgCard border-y border-primary/10 py-24 relative overflow-hidden">
+        <div class="absolute left-1/2 top-0 -translate-x-1/2 w-full h-1/2 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center reveal mb-16 flex flex-col items-center">
+                <div class="gold-divider w-20 mb-6 mx-auto"></div>
+                <h2 class="font-serif text-4xl md:text-5xl text-white mb-3">核心業務</h2>
+                <span class="text-primary tracking-widest uppercase text-sm font-bold">Core Services</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 業務 1: 影片拍攝及製作 -->
+                <div class="bg-bgDark p-8 rounded-xl border border-white/10 gold-border-hover reveal group shadow-md hover:shadow-primary/10">
+                    <div class="text-bgDark mb-6 bg-primary w-14 h-14 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-3 text-white group-hover:text-primary transition-colors font-medium">影片拍攝及製作</h3>
+                    <p class="text-sm text-textMuted leading-relaxed">專注教育敘事與文化紀錄，擅長將複雜內容轉化為生動影像，提升傳播感染力。</p>
+                </div>
+                <!-- 業務 2: 照片直播 -->
+                <div class="bg-bgDark p-8 rounded-xl border border-white/10 gold-border-hover reveal group shadow-md hover:shadow-primary/10" style="transition-delay: 100ms;">
+                    <div class="text-bgDark mb-6 bg-primary w-14 h-14 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-3 text-white group-hover:text-primary transition-colors font-medium">照片與網路直播</h3>
+                    <p class="text-sm text-textMuted leading-relaxed">實時記錄，瞬間共享。依托雲平台與AI工具，實現拍攝後即時上傳、修圖與交付。</p>
+                </div>
+                <!-- 業務 3: 網站設計 -->
+                <div class="bg-bgDark p-8 rounded-xl border border-white/10 gold-border-hover reveal group shadow-md hover:shadow-primary/10" style="transition-delay: 200ms;">
+                    <div class="text-bgDark mb-6 bg-primary w-14 h-14 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-3 text-white group-hover:text-primary transition-colors font-medium">網站設計與開發</h3>
+                    <p class="text-sm text-textMuted leading-relaxed">融合文化美學與互動體驗，根據用戶需求提供客製化服務，打造專屬數位化平台。</p>
+                </div>
+                <!-- 業務 4: 平面設計 -->
+                <div class="bg-bgDark p-8 rounded-xl border border-white/10 gold-border-hover reveal group shadow-md hover:shadow-primary/10" style="transition-delay: 300ms;">
+                    <div class="text-bgDark mb-6 bg-primary w-14 h-14 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-3 text-white group-hover:text-primary transition-colors font-medium">視覺與平面設計</h3>
+                    <p class="text-sm text-textMuted leading-relaxed">視覺傳達與品牌形象的精準表達，涵蓋活動海報、多媒體宣傳內容與文化符號設計。</p>
+                </div>
+                <!-- 業務 5: 活動策劃 -->
+                <div class="bg-bgDark p-8 rounded-xl border border-white/10 gold-border-hover reveal group shadow-md hover:shadow-primary/10">
+                    <div class="text-bgDark mb-6 bg-primary w-14 h-14 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-3 text-white group-hover:text-primary transition-colors font-medium">大型活動策劃</h3>
+                    <p class="text-sm text-textMuted leading-relaxed">從概念到落地的全流程創意管理。包含場地佈置、全程攝影、現場協調及通訊架構。</p>
+                </div>
+                <!-- 業務 6: 媒體運營 -->
+                <div class="bg-bgDark p-8 rounded-xl border border-white/10 gold-border-hover reveal group shadow-md hover:shadow-primary/10" style="transition-delay: 100ms;">
+                    <div class="text-bgDark mb-6 bg-primary w-14 h-14 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-3 text-white group-hover:text-primary transition-colors font-medium">新媒體與IP運營</h3>
+                    <p class="text-sm text-textMuted leading-relaxed">多平臺內容策略與受眾互動。打造個人IP品牌，覆蓋B站、YouTube、小紅書等多渠道。</p>
+                </div>
+                <!-- 業務 7: 品牌賦能 -->
+                <div class="bg-bgDark p-8 rounded-xl border border-white/10 gold-border-hover reveal group shadow-md hover:shadow-primary/10" style="transition-delay: 200ms;">
+                    <div class="text-bgDark mb-6 bg-primary w-14 h-14 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-3 text-white group-hover:text-primary transition-colors font-medium">文化與品牌賦能</h3>
+                    <p class="text-sm text-textMuted leading-relaxed">整合多元創意解決方案，為傳統文化、學術成果及商業客戶提供一站式數字營銷賦能。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 作品展示區 (完全保留原版照片數量、尺寸與排版) -->
+    <!-- ========================================== -->
+    <main id="work" class="max-w-7xl mx-auto px-6 py-24">
+
+        <!-- 數字品牌與媒體傳播 -->
+        <div class="reveal mb-20 border-b border-primary/20 pb-6">
+            <h2 class="font-serif text-3xl md:text-4xl text-white tracking-wide">
+                Digital & Media <span class="text-xl text-primary font-sans ml-4 tracking-widest uppercase font-medium">數字品牌與媒體傳播</span>
+            </h2>
+        </div>
+
+        <div class="space-y-40 mb-40">
+            <!-- 項目 01: 智慧博物館 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 order-2 lg:order-1 flex flex-col gap-6">
+                        <div class="w-full overflow-hidden img-container rounded bg-bgCard drop-shadow-2xl aspect-[1920/1080]">
+                            <img src="./2025年3月10日- (6).jpg" alt="Museum Culture Week KV" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <div class="w-full overflow-hidden img-container rounded bg-bgCard drop-shadow-2xl aspect-[1414/2000]">
+                            <img src="./博物馆文化周final.jpg" alt="Museum Culture Week Poster" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 space-y-6 order-1 lg:order-2 lg:pl-8">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">01 — Web & Digital Branding</span>
+                        <!-- 使用 inline-block 防止孤字換行 -->
+                        <h2 class="font-serif text-4xl md:text-5xl text-white leading-tight">
+                            <span class="inline-block">香港大學中文學院</span><br>
+                            <span class="inline-block">博物館文化周</span>
+                        </h2>
+                        <div class="space-y-2 text-sm text-textMain font-light border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">時間：</strong>2025年9月至今</p>
+                            <p><strong class="text-white font-medium">項目：</strong>「智慧博物館」及「博物館文化周」</p>
+                            <p><strong class="text-white font-medium">服務：</strong>主視覺設計、活動網站設計與搭建</p>
+                        </div>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            嶺先文化受委託負責該項目的整體視覺呈現與數字化落地。我們為「博物館文化周」設計了極具美感的主視覺（KV），並獨立承接了活動官方網站的UI/UX設計與全棧搭建，確保了學術文化項目的現代化、數字化傳播。
+                        </p>
+                        <a href="https://smartpalace.hku.hk" target="_blank" class="inline-block mt-4 text-sm tracking-widest text-primary font-bold uppercase border-b border-primary pb-1 hover:text-white hover:border-white transition-colors">
+                            Visit Website ↗
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 項目 02: 如何閲讀中國詩歌 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center film-border py-12">
+                    <div class="lg:col-span-5 space-y-6">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">02 — Video Production & Media Ops</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white leading-tight">
+                            <span class="inline-block">如何閲讀中國詩歌</span><br>
+                            <span class="text-2xl text-textMuted font-sans mt-2 block inline-block">How to Read Chinese Poetry</span>
+                        </h2>
+                        <div class="space-y-2 text-sm text-textMain font-light border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">時間：</strong>2022年9月至今</p>
+                            <p><strong class="text-white font-medium">機構：</strong>嶺南大學環球中國文化高等研究院</p>
+                            <p><strong class="text-white font-medium">服務：</strong>影視拍攝、剪輯包裝、媒體矩陣運營</p>
+                            <p><strong class="text-primary font-bold">成就：</strong>打造品牌頻道，獲 100K+ 粉絲，全網逾 3,200,000 次播放</p>
+                        </div>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            作為該旗艦學術傳播項目的核心製作方，我們負責了全系列視頻的拍攝、剪輯與視覺包裝。同時主導了 @嶺南大學蔡宗齊老師 IP頻道的全程運營，通過多平臺內容策略，極大提升了學術內容的大眾觸達率。
+                        </p>
+                        <div class="flex gap-6 pt-2">
+                            <a href="https://www.youtube.com/@aigcsln" target="_blank" class="inline-block text-sm tracking-widest text-primary font-bold uppercase border-b border-primary pb-1 hover:text-white hover:border-white transition-colors">
+                                YouTube ↗
+                            </a>
+                            <a href="https://space.bilibili.com/1002790226" target="_blank" class="inline-block text-sm tracking-widest text-primary font-bold uppercase border-b border-primary pb-1 hover:text-white hover:border-white transition-colors">
+                                Bilibili ↗
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7 grid grid-cols-2 gap-4">
+                        <div class="col-span-2 overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./image_cd42c0.jpg" alt="Professor Zong-qi Cai Interview" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./4ab4afe555c3948c3fb9f62c35181a63dc263d3d (1).jpg" alt="YouTube Channel" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./image_cd423f.jpg" alt="Bilibili Channel" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 大型論壇與展覽策劃 -->
+        <div class="reveal mb-20 border-b border-primary/20 pb-6">
+            <h2 class="font-serif text-3xl md:text-4xl text-white tracking-wide">
+                Event Management <span class="text-xl text-primary font-sans ml-4 tracking-widest uppercase font-medium">大型論壇與展覽策劃</span>
+            </h2>
+        </div>
+
+        <div class="space-y-40 mb-40">
+            <!-- 項目 03: 全球數字組織身份論壇 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-12">
+                    <div class="lg:col-span-5 space-y-6 lg:pr-8">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">03 — Event Tech & Live Streaming</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white leading-tight">
+                            <span class="inline-block">Global Forum on Digital</span><br>
+                            <span class="inline-block">Organizational Identity</span>
+                        </h2>
+                        <div class="space-y-2 text-sm text-textMain font-light border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">時間：</strong>2025年9月至11月</p>
+                            <p><strong class="text-white font-medium">服務：</strong>現場總控、網路直播、照片直播、海報設計</p>
+                            <p><strong class="text-white font-medium">地點：</strong>Cyberport 數碼港</p>
+                        </div>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            嶺先文化團隊為此國際商業科技會議提供了端到端技術解決方案。我們負責大會宣傳海報設計，並全程統籌網路直播與照片直播，即時傳輸演講瞬間，實現線上瀏覽量 1000+，確保了國際級會議的高效傳播。
+                        </p>
+                    </div>
+                    <div class="lg:col-span-7 grid grid-cols-2 gap-4">
+                        <!-- 海報 (左側高圖) -->
+                        <div class="row-span-2 overflow-hidden img-container bg-bgCard rounded">
+                            <img src="./2025年全球数字组织身份论坛 (6).jpg" alt="Global Forum Poster" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 嘉賓演講 (右上小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./DSC08945.jpg" alt="Event Panel" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 觀眾席 (右下小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./DSC08789.jpg" alt="Event Audience" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 嘉賓合影 (左下小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./DSC08448.jpg" alt="Event Guests" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 全場大合影 (右下小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./與觀衆合影.jpg" alt="Event Group Photo" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 項目 04: 莫言展覽 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center film-border py-12">
+                    <div class="lg:col-span-4 space-y-6 lg:pr-4">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">04 — Visual & Event Coordination</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white leading-tight">
+                            <span class="inline-block">放寬心·吃茶去</span><br>
+                            <span class="text-2xl text-textMuted font-sans mt-2 block inline-block">莫言香港展覽</span>
+                        </h2>
+                        <div class="space-y-2 text-sm text-textMain font-light border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">時間：</strong>2025年8月至10月</p>
+                            <p><strong class="text-white font-medium">服務：</strong>主視覺設計、活動統籌、無人機攝影、媒體推廣</p>
+                            <p><strong class="text-primary font-bold">成就：</strong>單條推廣 200K+ 播放，小紅書 200K+ 曝光</p>
+                        </div>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            負責諾貝爾文學獎獲得者莫言在港展覽的整體統籌。團隊主導了大會主視覺（KV）設計與宣傳策略，並全面承接現場攝錄影方案（含無人機活動）及整體行政管理。活動現場吸引 300+ 觀眾，引發多家媒體報導。
+                        </p>
+                    </div>
+                    <div class="lg:col-span-8 grid grid-cols-2 gap-4">
+                        <!-- KV 1 (左上) -->
+                        <div class="overflow-hidden img-container bg-bgCard rounded aspect-[3/2]">
+                            <img src="./image_cdab43.jpg" alt="Mo Yan Exhibition KV 1" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- KV 2 (右上) -->
+                        <div class="overflow-hidden img-container bg-bgCard rounded aspect-[3/2]">
+                            <img src="./image_cda892.jpg" alt="Mo Yan Exhibition KV 2" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 現場合影/展示 (中橫大圖) -->
+                        <div class="col-span-2 overflow-hidden img-container bg-bgCard rounded aspect-video">
+                            <img src="./DSCF8972.png" alt="Mo Yan Exhibition Event 1" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 現場創作 (左下) -->
+                        <div class="overflow-hidden img-container bg-bgCard rounded aspect-[3/2]">
+                            <img src="./DSCF8962.png" alt="Mo Yan Exhibition Event 2" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 現場導覽 (右下) -->
+                        <div class="overflow-hidden img-container bg-bgCard rounded aspect-[3/2]">
+                            <img src="./DSCF8924.jpg" alt="Mo Yan Exhibition Event 3" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 項目 05: 哈佛聯合研討會 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-12">
+                    <div class="lg:col-span-7 grid grid-cols-2 gap-4 order-2 lg:order-1">
+                        <div class="col-span-2 overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./DSC08786.JPG" alt="Harvard-Lingnan Symposium Panel" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./DSC01084.JPG" alt="Harvard-Lingnan Symposium Speaker" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./DSC00052-Enhanced-NR.jpg" alt="Harvard-Lingnan Symposium Group Photo" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 space-y-6 order-1 lg:order-2 lg:pl-8">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">05 — Academic Event Organization</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white leading-tight">
+                            <span class="inline-block">Lingnan Univ. x Harvard Univ.</span><br>
+                            <span class="inline-block">Joint Academic Seminar</span>
+                        </h2>
+                        <div class="space-y-2 text-sm text-textMain font-light border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">時間：</strong>2023年12月</p>
+                            <p><strong class="text-white font-medium">服務：</strong>國際學術會議全流程組織與視覺統籌</p>
+                            <p><strong class="text-primary font-bold">成就：</strong>協助高校與歐美學術機構會議順利舉辦</p>
+                        </div>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            為「The Avant-Garde x Hong Kong and the New South」聯合學術研討會搭建全面的現場錄製與直播解決方案。協助高校與大中華區及歐美國家學術機構順利舉辦國際學術會議，主導核心視覺設計並統籌現場管理。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 項目 06: 暑期影視實習工作坊 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center film-border py-12">
+                    <div class="lg:col-span-5 space-y-6 lg:pr-4">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">06 — Educational Workshop & Event</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white leading-tight">
+                            <span class="inline-block">2024暑期影視實習工作坊</span><br>
+                            <span class="text-2xl text-textMuted font-sans mt-2 block inline-block">@嶺南大學</span>
+                        </h2>
+                        <div class="space-y-2 text-sm text-textMain font-light border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">時間：</strong>2024年暑期</p>
+                            <p><strong class="text-white font-medium">機構：</strong>嶺大環球中國文化高等研究院、學生事務處</p>
+                            <p><strong class="text-white font-medium">服務：</strong>活動策劃、課程設計、專家授課、現場執行</p>
+                        </div>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            嶺先文化團隊自行策劃並組織設計的影視實習工作坊。課程涵蓋數字人文、攝影燈光、新媒體創作及後期剪輯等，邀請多位業內專家及頂尖高校學者親臨授課。活動不僅提升了學生在文化傳播領域的職業競爭力，更為優秀學員提供獎學金及工作推薦。
+                        </p>
+                    </div>
+                    <div class="lg:col-span-7 grid grid-cols-2 gap-4">
+                        <!-- 照片 1: 大合照 (頂部大圖) -->
+                        <div class="col-span-2 overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./484517866_654775167502502_5361735360041021927_n.jpg" alt="工作坊大合照" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 照片 2: 導師授課 -->
+                        <div class="overflow-hidden img-container aspect-[4/3] bg-bgCard rounded">
+                            <img src="./485370423_654775020835850_7912569507505252161_n.jpg" alt="導師授課" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 照片 3: 設備實操 -->
+                        <div class="overflow-hidden img-container aspect-[4/3] bg-bgCard rounded">
+                            <img src="./484051495_654774937502525_5742455727282083845_n.jpg" alt="設備實操" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 照片 4: 漢服體驗 -->
+                        <div class="overflow-hidden img-container aspect-[4/3] bg-bgCard rounded">
+                            <img src="./485101629_654774967502522_2780316569735694154_n.jpg" alt="漢服體驗" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 照片 5: 課堂剪影 -->
+                        <div class="overflow-hidden img-container aspect-[4/3] bg-bgCard rounded">
+                            <img src="./484499286_654774797502539_1496066060289084575_n.jpg" alt="課堂剪影" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 宣傳片製作 -->
+        <div class="reveal mb-20 border-b border-primary/20 pb-6">
+            <h2 class="font-serif text-3xl md:text-4xl text-white tracking-wide">
+                Promotional Video <span class="text-xl text-primary font-sans ml-4 tracking-widest uppercase font-medium">宣傳片製作</span>
+            </h2>
+        </div>
+
+        <div class="space-y-40 mb-40">
+            <!-- 項目 07: 品牌塑造與宣傳 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-12">
+                    <div class="lg:col-span-4 space-y-6 lg:pr-4">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">07 — Promotional Video & Branding</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white leading-tight">
+                            <span class="inline-block">Brand Identity</span><br>
+                            <span class="inline-block">& Promotion</span>
+                        </h2>
+                        <div class="space-y-4 text-sm text-textMain font-light leading-relaxed border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">項目：</strong>學術品牌與出版物宣傳片</p>
+                            <p class="text-textMuted">為學術出版物及機構設計並製作高品質的視覺宣傳內容，涵蓋 3D 建模渲染、動態視覺及實拍攝影，全方位塑造專業且極具電影感的品牌形象。</p>
+                            <ul class="space-y-3 mt-4">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    <strong class="text-white font-medium">《嶺南學報》</strong> 品牌視覺宣傳
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    <strong class="text-white font-medium">《唐詩所以然》</strong> 3D宣傳製作
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    <strong class="text-white font-medium">《如何閲讀中國詩歌》</strong> 書籍實拍宣傳
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 grid grid-cols-2 gap-4">
+                        <!-- 3D 宣傳 (頂部大圖) -->
+                        <div class="col-span-2 overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./ScreenShot_2026-03-01_202907_264.png" alt="嶺南學報 品牌宣傳" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 品牌宣傳 (左下小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./ScreenShot_2026-03-01_202503_098.png" alt="唐詩所以然 3D宣傳製作" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 實拍宣傳 (右下小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./ScreenShot_2026-03-01_203112_210.png" alt="如何閲讀中國詩歌 書籍實拍宣傳" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 項目 08: 中國彩管史-佛山館 -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center film-border py-12">
+                    <div class="lg:col-span-5 space-y-6 lg:pr-4">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">08 — Exhibition Video Production</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white leading-tight">
+                            <span class="inline-block">《中國彩管史-佛山館》</span><br>
+                            <span class="text-2xl text-textMuted font-sans mt-2 block inline-block">展覽影片</span>
+                        </h2>
+                        <div class="space-y-4 text-sm text-textMain font-light leading-relaxed border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">服務：</strong>展覽宣傳片、紀錄影片製作</p>
+                            <p class="text-textMuted">為《中國彩管史-佛山館》策劃並製作系列展覽影片，還原行業歷史與重要里程碑，用鏡頭記錄產業發展軌跡。專案包含：</p>
+                            <ul class="space-y-3 mt-4">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    <strong class="text-white font-medium">彩管行業退市會</strong> 紀實影片
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    <strong class="text-white font-medium">《中國彩管史》新書發佈會</strong> 宣傳影片
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 影片 1: 退市會 -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded border border-white/5 relative group shadow-lg">
+                            <img src="./静帧 2026-03-08 001924_2.4.1.png" alt="彩管行業退市會" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 影片 2: 新書發佈 -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded border border-white/5 relative group shadow-lg">
+                            <img src="./静帧 2026-03-08 003226_1.12.1.png" alt="新書發佈會" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 敘事短片創作 -->
+        <div class="reveal mb-20 border-b border-primary/20 pb-6">
+            <h2 class="font-serif text-3xl md:text-4xl text-white tracking-wide">
+                Narrative Short Film <span class="text-xl text-primary font-sans ml-4 tracking-widest uppercase font-medium">敘事短片創作</span>
+            </h2>
+        </div>
+
+        <div class="space-y-40 mb-40">
+            <!-- 項目 09: 12 Twelve -->
+            <section class="reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-5 space-y-6 lg:pr-4">
+                        <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded">09 — Original Narrative Short Film</span>
+                        <h2 class="font-serif text-4xl md:text-5xl text-white leading-tight">
+                            <span class="inline-block">12 Twelve</span>
+                        </h2>
+                        <div class="space-y-4 text-sm text-textMain font-light border-l-2 border-primary/30 pl-4 py-1">
+                            <p><strong class="text-white font-medium">時間：</strong>2024年3月至5月</p>
+                            <p><strong class="text-white font-medium">項目：</strong>原創劇情短片</p>
+                            <div>
+                                <strong class="text-white font-medium block mb-2">獲獎與入圍 (Awards & Selections)：</strong>
+                                <ul class="list-disc pl-4 space-y-1.5 text-textMuted">
+                                    <li>亞洲獨立電影節 (Asian Independent Film Festival) 榮譽提名</li>
+                                    <li>天津國際電影學術聯展 (Tianjin International Academic Film Fest.) 入圍</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="text-sm text-textMuted leading-relaxed">
+                            嶺先文化團隊原創獨立製作之敘事短片，展現了我們在導演、編劇、攝影、剪輯及聲音設計上的全方位影視藝術創作能力，用鏡頭講述深度故事。
+                        </p>
+                    </div>
+                    <div class="lg:col-span-7 grid grid-cols-3 gap-4">
+                        <!-- 海報 (左側豎圖) -->
+                        <div class="row-span-2 overflow-hidden img-container bg-bgCard rounded">
+                            <img src="./08172790e0-poster.jpg" alt="12 Twelve Poster" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 劇照 1 (右上大圖) -->
+                        <div class="col-span-2 overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./1_1.3.1.jpg" alt="12 Twelve Still 1" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 劇照 2 (右下小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./2_1.2.1.jpg" alt="12 Twelve Still 2" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                        <!-- 劇照 3 (右下小圖) -->
+                        <div class="overflow-hidden img-container aspect-video bg-bgCard rounded">
+                            <img src="./11_1.7.1.jpg" alt="12 Twelve Still 3" class="w-full h-full object-cover cinematic-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 其他收錄 OTHERS -->
+        <!-- 項目 10: VOGUE 攝影 -->
+        <section class="reveal pt-12 mb-12">
+            <div class="text-center space-y-4 mb-10">
+                <span class="text-xs tracking-[0.2em] text-primary font-bold uppercase bg-primary/10 px-3 py-1 rounded inline-block">10 — Cultural Documentation & Photography</span>
+                <h2 class="font-serif text-4xl text-white">VOGUE Featured</h2>
+                <p class="text-sm text-textMuted">國際頂尖時尚雜誌收錄之攝影作品 / 精彩文化瞬間記錄</p>
+            </div>
+            <div class="overflow-hidden img-container bg-bgCard rounded w-full aspect-[1280/854] shadow-2xl">
+                <img src="./ee7d3887f8f638736eda737263c72341.jpg" alt="VOGUE Photography" class="w-full h-full object-cover cinematic-img">
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 聯絡我們 / Contact (Footer) -->
+    <footer id="contact" class="bg-[#11100E] border-t border-primary/20 pt-24 pb-12 mt-10 relative overflow-hidden">
+        <!-- 裝飾背景光暈 -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center flex flex-col items-center">
+            <h2 class="font-serif text-4xl text-white mb-6">開啟您的視覺傳播之旅</h2>
+            <p class="text-textMuted mb-12 max-w-xl mx-auto text-sm">無論是學術項目的視覺化升級，還是國際級會議的技術統籌，我們期待以專業的影像力量，為您的品牌賦能。</p>
+            
+            <div class="flex flex-col md:flex-row gap-6 md:gap-12 mb-20">
+                <a href="mailto:HKCDLCL@GMAIL.COM" class="flex flex-col items-center group">
+                    <div class="w-16 h-16 rounded-full border border-primary/40 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-bgDark transition-all duration-300 shadow-[0_0_15px_rgba(232,185,35,0.1)] group-hover:shadow-[0_0_25px_rgba(232,185,35,0.4)] transform group-hover:-translate-y-1">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <span class="text-sm tracking-widest text-textMuted group-hover:text-primary transition-colors uppercase font-medium">Email Us</span>
+                    <span class="text-lg font-serif text-white mt-1">HKCDLCL@GMAIL.COM</span>
+                </a>
+                
+                <div class="hidden md:block w-px bg-primary/20"></div>
+                
+                <a href="tel:+85292905568" class="flex flex-col items-center group">
+                    <div class="w-16 h-16 rounded-full border border-primary/40 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-bgDark transition-all duration-300 shadow-[0_0_15px_rgba(232,185,35,0.1)] group-hover:shadow-[0_0_25px_rgba(232,185,35,0.4)] transform group-hover:-translate-y-1">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    </div>
+                    <span class="text-sm tracking-widest text-textMuted group-hover:text-primary transition-colors uppercase font-medium">Call Us</span>
+                    <span class="text-lg font-serif text-white mt-1">+852 9290 5568</span>
+                </a>
+            </div>
+            
+            <div class="w-full border-t border-white/5 pt-8 mt-4 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-textMuted">
+                <div class="mb-4 md:mb-0 opacity-80 hover:opacity-100 transition-opacity">
+                    <img src="./HKCDLCL Introduction.png" alt="Logo" class="h-8 md:h-10 object-contain">
+                </div>
+                <p>&copy; 2026 HONG KONG CULTURAL DISSEMINATION LEADING CO., LTD. ALL RIGHTS RESERVED.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 滾動動畫與導航欄變色腳本 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 元素淡入動畫
+            const reveals = document.querySelectorAll(".reveal");
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+
+            // 導航欄滾動效果
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-lg', 'bg-bgDark/95');
+                    navbar.classList.remove('bg-bgDark/80');
+                } else {
+                    navbar.classList.remove('shadow-lg', 'bg-bgDark/95');
+                    navbar.classList.add('bg-bgDark/80');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
