@@ -102,14 +102,18 @@ section:not(.hero){padding:104px 0}
 .project-synopsis{display:grid;gap:16px;margin-top:22px}
 .project--app .info{position:relative}
 .app-mark{display:block;width:36px;height:36px;object-fit:contain;margin:0 0 14px;border-radius:9px;background:#f1f1ec}
-.app-gallery .gallery-item{width:35%}
-.app-gallery .gallery-item:only-child{width:35%}
+.app-gallery{display:flex;flex-direction:row;align-items:flex-start;justify-content:center;min-height:380px;padding:10px 0 18px;overflow:visible}
+.app-gallery .gallery-item,.app-gallery .gallery-item:only-child{width:42%;align-self:auto;margin:0;padding:8px 0;--card-angle:-3deg}
+.app-gallery .gallery-item+.gallery-item{margin-top:0;margin-left:-14%}
+.app-gallery .gallery-item:nth-child(1){z-index:1;transform:translateY(26px)}
+.app-gallery .gallery-item:nth-child(2){z-index:3;--card-angle:0deg}
+.app-gallery .gallery-item:nth-child(3){z-index:2;--card-angle:3deg;transform:translateY(26px)}
 .course-gallery .gallery-item{width:92%}
 .project-subhead{display:flex;align-items:baseline;gap:14px;margin:42px 0 -8px;padding-top:32px;border-top:1px solid var(--line)}
 .project-subhead span{font-size:10px;color:var(--muted);letter-spacing:.06em}
 .project-subhead h3{font-size:16px;font-weight:500;letter-spacing:-.02em}
 .project-subhead em{font-size:11px;font-style:normal;font-weight:400;color:var(--muted);letter-spacing:.02em;margin-left:8px}
-@media(max-width:600px){.app-mark{width:31px;height:31px;margin-bottom:12px}.app-gallery .gallery-item,.app-gallery .gallery-item:only-child{width:48%}.course-gallery .gallery-item{width:95%}.project-subhead{margin-top:24px;padding-top:24px}.project-subhead h3{font-size:15px}.project-subhead em{display:block;margin:4px 0 0;font-size:10px}}
+@media(max-width:600px){.app-mark{width:31px;height:31px;margin-bottom:12px}.app-gallery{min-height:310px;padding:4px 0 12px}.app-gallery .gallery-item,.app-gallery .gallery-item:only-child{width:52%;padding:4px 0}.app-gallery .gallery-item+.gallery-item{margin-left:-28%}.app-gallery .gallery-item:nth-child(1),.app-gallery .gallery-item:nth-child(3){transform:translateY(17px)}.course-gallery .gallery-item{width:95%}.project-subhead{margin-top:24px;padding-top:24px}.project-subhead h3{font-size:15px}.project-subhead em{display:block;margin:4px 0 0;font-size:10px}}
 .meta{font-size:12px;gap:12px}
 .meta .row b{font-size:10px;letter-spacing:.02em}
 .project .notes{font-size:12px}
