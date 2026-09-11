@@ -100,6 +100,12 @@ section:not(.hero){padding:104px 0}
 .project .en{font-size:12px;line-height:1.7}
 .project .desc{font-size:14px;line-height:1.9}
 .project-synopsis{display:grid;gap:16px;margin-top:22px}
+.project--app .info{position:relative}
+.app-mark{display:block;width:72px;height:72px;object-fit:contain;margin:0 0 18px;border-radius:18px;background:#f1f1ec}
+.app-gallery .gallery-item{width:70%}
+.app-gallery .gallery-item:only-child{width:70%}
+.course-gallery .gallery-item{width:92%}
+@media(max-width:600px){.app-mark{width:62px;height:62px;margin-bottom:14px}.app-gallery .gallery-item,.app-gallery .gallery-item:only-child,.course-gallery .gallery-item{width:95%}}
 .meta{font-size:12px;gap:12px}
 .meta .row b{font-size:10px;letter-spacing:.02em}
 .project .notes{font-size:12px}
