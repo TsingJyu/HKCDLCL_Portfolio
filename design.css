@@ -101,11 +101,15 @@ section:not(.hero){padding:104px 0}
 .project .desc{font-size:14px;line-height:1.9}
 .project-synopsis{display:grid;gap:16px;margin-top:22px}
 .project--app .info{position:relative}
-.app-mark{display:block;width:72px;height:72px;object-fit:contain;margin:0 0 18px;border-radius:18px;background:#f1f1ec}
-.app-gallery .gallery-item{width:70%}
-.app-gallery .gallery-item:only-child{width:70%}
+.app-mark{display:block;width:36px;height:36px;object-fit:contain;margin:0 0 14px;border-radius:9px;background:#f1f1ec}
+.app-gallery .gallery-item{width:35%}
+.app-gallery .gallery-item:only-child{width:35%}
 .course-gallery .gallery-item{width:92%}
-@media(max-width:600px){.app-mark{width:62px;height:62px;margin-bottom:14px}.app-gallery .gallery-item,.app-gallery .gallery-item:only-child,.course-gallery .gallery-item{width:95%}}
+.project-subhead{display:flex;align-items:baseline;gap:14px;margin:42px 0 -8px;padding-top:32px;border-top:1px solid var(--line)}
+.project-subhead span{font-size:10px;color:var(--muted);letter-spacing:.06em}
+.project-subhead h3{font-size:16px;font-weight:500;letter-spacing:-.02em}
+.project-subhead em{font-size:11px;font-style:normal;font-weight:400;color:var(--muted);letter-spacing:.02em;margin-left:8px}
+@media(max-width:600px){.app-mark{width:31px;height:31px;margin-bottom:12px}.app-gallery .gallery-item,.app-gallery .gallery-item:only-child{width:48%}.course-gallery .gallery-item{width:95%}.project-subhead{margin-top:24px;padding-top:24px}.project-subhead h3{font-size:15px}.project-subhead em{display:block;margin:4px 0 0;font-size:10px}}
 .meta{font-size:12px;gap:12px}
 .meta .row b{font-size:10px;letter-spacing:.02em}
 .project .notes{font-size:12px}
