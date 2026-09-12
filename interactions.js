@@ -15,13 +15,28 @@
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
   const geometry = document.querySelector('.page-geometry');
   let lightFrame = 0;
-  let lightX = 0;
-  let lightY = 0;
+  let lightTargetX = 0;
+  let lightTargetY = 0;
+  let lightCurX = 0;
+  let lightCurY = 0;
+  let lightVX = 0;
+  let lightVY = 0;
+  let lightFollowFrame = 0;
+  let lightFollowLast = 0;
+  let lightInitialized = false;
   let browsing = false;
   let activeIndex = -1;
   let frame = 0;
   let pointerX = 0;
   let pointerY = 0;
+  let previewX = 0;
+  let previewY = 0;
+  let previewVX = 0;
+  let previewVY = 0;
+  let targetX = 0;
+  let targetY = 0;
+  let followFrame = 0;
+  let followLast = 0;
   const motionToggle = document.getElementById('motionToggle');
   let motionPaused = false;
   let heroVisible = true;
@@ -51,28 +66,70 @@
   function resetLight() {
     if (lightFrame) cancelAnimationFrame(lightFrame);
     lightFrame = 0;
+    if (lightFollowFrame) cancelAnimationFrame(lightFollowFrame);
+    lightFollowFrame = 0;
+    lightInitialized = false;
     geometry.style.setProperty('--light-opacity', '0');
+  }
+  function applyLightTransform() {
+    geometry.style.setProperty('--light-x', `${lightCurX}px`);
+    geometry.style.setProperty('--light-y', `${lightCurY}px`);
+  }
+  function lightTick(now) {
+    if (!lightFollowLast) lightFollowLast = now;
+    let dt = (now - lightFollowLast) / 1000;
+    lightFollowLast = now;
+    if (dt > 0.064) dt = 0.064;
+    // critically damped spring, ~0.24s response, x/y independent
+    const omega = 2 * Math.PI / 0.24;
+    const stiffness = omega * omega;
+    const damping = 2 * omega;
+    lightVX += (stiffness * (lightTargetX - lightCurX) - damping * lightVX) * dt;
+    lightVY += (stiffness * (lightTargetY - lightCurY) - damping * lightVY) * dt;
+    lightCurX += lightVX * dt;
+    lightCurY += lightVY * dt;
+    applyLightTransform();
+    const settled = Math.abs(lightTargetX - lightCurX) < 0.5 && Math.abs(lightTargetY - lightCurY) < 0.5 && Math.abs(lightVX) < 1 && Math.abs(lightVY) < 1;
+    if (settled) {
+      lightFollowFrame = 0;
+      lightCurX = lightTargetX;
+      lightCurY = lightTargetY;
+      applyLightTransform();
+    } else {
+      lightFollowFrame = requestAnimationFrame(lightTick);
+    }
+  }
+  function startLightFollow() {
+    if (!lightInitialized) {
+      lightInitialized = true;
+      lightCurX = lightTargetX;
+      lightCurY = lightTargetY;
+      lightVX = 0;
+      lightVY = 0;
+      applyLightTransform();
+    }
+    if (!lightFollowFrame) {
+      lightFollowLast = 0;
+      lightFollowFrame = requestAnimationFrame(lightTick);
+    }
   }
   document.addEventListener('pointermove', event => {
     if (!finePointer.matches || reducedMotion.matches) return;
-    lightX = event.clientX;
-    lightY = event.clientY;
+    lightTargetX = event.clientX;
+    lightTargetY = event.clientY;
+    geometry.style.setProperty('--light-opacity', '1');
     if (lightFrame) return;
     lightFrame = requestAnimationFrame(() => {
-      geometry.style.setProperty('--light-x', `${lightX}px`);
-      geometry.style.setProperty('--light-y', `${lightY}px`);
-      geometry.style.setProperty('--light-opacity', '1');
       lightFrame = 0;
+      startLightFollow();
     });
   }, { passive: true });
   document.documentElement.addEventListener('pointerleave', resetLight);
-  window.addEventListener('scroll', resetLight, { passive: true });
   reducedMotion.addEventListener('change', resetLight);
 
   function updateNavigation() {
     navigation.classList.toggle('scrolled', window.scrollY > 40);
   }
-  window.addEventListener('scroll', updateNavigation, { passive: true });
   updateNavigation();
 
   function closeMenu(restoreFocus = false) {
@@ -124,12 +181,59 @@
   function hidePreview() {
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
+    stopFollow();
     browsing = false;
     preview.hidden = true;
     art.classList.remove('preview-open');
     toggle.setAttribute('aria-expanded', 'false');
     toggle.innerHTML = '查看拼圖作品 <span>＋</span>';
     closePreview.hidden = true;
+  }
+  function applyPreviewTransform() {
+    preview.style.transform = `translate3d(${previewX}px, ${previewY}px, 0)`;
+  }
+  function snapPreview() {
+    previewX = targetX;
+    previewY = targetY;
+    previewVX = 0;
+    previewVY = 0;
+    applyPreviewTransform();
+  }
+  function stopFollow() {
+    if (followFrame) cancelAnimationFrame(followFrame);
+    followFrame = 0;
+    followLast = 0;
+  }
+  function followTick(now) {
+    if (!followLast) followLast = now;
+    let dt = (now - followLast) / 1000;
+    followLast = now;
+    if (dt > 0.064) dt = 0.064; // clamp after tab switches to avoid a jump
+    // critically damped spring: damping ratio 1.0, response ~0.3s
+    const omega = 2 * Math.PI / 0.3;
+    const stiffness = omega * omega;
+    const damping = 2 * omega;
+    previewVX += (stiffness * (targetX - previewX) - damping * previewVX) * dt;
+    previewVY += (stiffness * (targetY - previewY) - damping * previewVY) * dt;
+    previewX += previewVX * dt;
+    previewY += previewVY * dt;
+    applyPreviewTransform();
+    const settled = Math.abs(targetX - previewX) < 0.5 && Math.abs(targetY - previewY) < 0.5 && Math.abs(previewVX) < 1 && Math.abs(previewVY) < 1;
+    if (settled) {
+      followFrame = 0;
+      previewX = targetX;
+      previewY = targetY;
+      applyPreviewTransform();
+    } else {
+      followFrame = requestAnimationFrame(followTick);
+    }
+  }
+  function startFollow() {
+    if (browsing || reducedMotion.matches || !finePointer.matches) return snapPreview();
+    if (!followFrame) {
+      followLast = 0;
+      followFrame = requestAnimationFrame(followTick);
+    }
   }
   function placePreview(horizontal, vertical) {
     const margin = 16;
@@ -144,7 +248,8 @@
     left = Math.max(margin, Math.min(left, window.innerWidth - preview.offsetWidth - margin));
     const minimumTop = Math.max(margin, navigation.getBoundingClientRect().bottom + 12);
     top = Math.max(minimumTop, Math.min(top, window.innerHeight - preview.offsetHeight - margin));
-    preview.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+    targetX = left;
+    targetY = top;
   }
   function showPreview(index, announce = false) {
     if (index !== activeIndex) {
@@ -160,6 +265,7 @@
       document.getElementById('previewCaption').textContent = project.caption;
       document.getElementById('previewCount').textContent = `${String(index + 1).padStart(2, '0')} / ${projects.length}`;
     }
+    const wasHidden = preview.hidden;
     preview.hidden = false;
     art.classList.add('preview-open');
     toggle.setAttribute('aria-expanded', 'true');
@@ -169,6 +275,8 @@
       document.getElementById('previewStatus').textContent = `${projects[index].title}，項目期間：${projects[index].date}`;
     }
     placePreview(pointerX, pointerY);
+    if (wasHidden || browsing || reducedMotion.matches || !finePointer.matches) snapPreview();
+    else startFollow();
   }
   function hitTest(horizontal, vertical) {
     const bounds = heroImage.getBoundingClientRect();
@@ -224,7 +332,6 @@
   document.addEventListener('pointerdown', event => {
     if (!art.contains(event.target) && !event.target.closest('.preview-controls')) hidePreview();
   });
-  window.addEventListener('scroll', hidePreview, { passive: true });
   window.addEventListener('resize', () => {
     if (window.innerWidth > 860) closeMenu();
     hidePreview();
@@ -326,7 +433,40 @@
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') clearHighlight();
   });
-  window.addEventListener('scroll', clearHighlight, { passive: true });
   window.addEventListener('resize', clearHighlight, { passive: true });
   finePointer.addEventListener('change', clearHighlight);
+
+  /* §16 wayfinding: highlight the section currently in view */
+  const navLinks = Array.from(document.querySelectorAll('.nav-links a, .mobile-menu a'));
+  const sections = ['about', 'services', 'work', 'contact'].map(id => document.getElementById(id)).filter(Boolean);
+  let currentSection = '';
+  function updateActiveSection() {
+    const probe = window.innerHeight * 0.38;
+    let activeId = '';
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top <= probe) activeId = section.id;
+    }
+    if (activeId === currentSection) return;
+    currentSection = activeId;
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === '#' + activeId) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  /* §1/§11: one rAF-throttled scroll handler instead of four separate listeners */
+  let scrollFrame = 0;
+  function onScroll() {
+    if (scrollFrame) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = 0;
+      updateNavigation();
+      resetLight();
+      hidePreview();
+      clearHighlight();
+      updateActiveSection();
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  updateActiveSection();
 })();
