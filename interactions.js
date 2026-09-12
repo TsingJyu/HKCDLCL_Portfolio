@@ -168,8 +168,10 @@
     focusable[next].focus();
   });
 
+  const galleryImages = Array.from(document.querySelectorAll('.gallery img'));
+  const aboutImages = Array.from(document.querySelectorAll('.about-fig img'));
   const projects = manifest.photos.map(source => {
-    const image = Array.from(document.querySelectorAll('.gallery img, .about-fig img')).find(item => item.getAttribute('src') === source);
+    const image = galleryImages.find(item => item.getAttribute('src') === source) || aboutImages.find(item => item.getAttribute('src') === source);
     const project = image?.closest('.project');
     const metadata = {};
     project?.querySelectorAll('.meta .row').forEach(row => {
@@ -469,4 +471,66 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   updateActiveSection();
+
+  /* §8 depth: subtle pointer parallax on the hero letter collage */
+  const PARALLAX = 5;
+  let paraTargetX = 0, paraTargetY = 0;
+  let paraCurX = 0, paraCurY = 0, paraVX = 0, paraVY = 0;
+  let paraFrame = 0, paraLast = 0, paraInit = false;
+  function applyParallax() {
+    art.style.transform = `translate3d(${paraCurX}px, ${paraCurY}px, 0)`;
+  }
+  function parallaxTick(now) {
+    if (!paraLast) paraLast = now;
+    let dt = (now - paraLast) / 1000;
+    paraLast = now;
+    if (dt > 0.064) dt = 0.064;
+    const omega = 2 * Math.PI / 0.7;
+    const stiffness = omega * omega;
+    const damping = 2 * omega;
+    paraVX += (stiffness * (paraTargetX - paraCurX) - damping * paraVX) * dt;
+    paraVY += (stiffness * (paraTargetY - paraCurY) - damping * paraVY) * dt;
+    paraCurX += paraVX * dt;
+    paraCurY += paraVY * dt;
+    applyParallax();
+    const settled = Math.abs(paraTargetX - paraCurX) < 0.1 && Math.abs(paraTargetY - paraCurY) < 0.1 && Math.abs(paraVX) < 0.5 && Math.abs(paraVY) < 0.5;
+    if (settled) {
+      paraFrame = 0;
+      paraCurX = paraTargetX; paraCurY = paraTargetY;
+      applyParallax();
+    } else {
+      paraFrame = requestAnimationFrame(parallaxTick);
+    }
+  }
+  function startParallax() {
+    if (!paraInit) {
+      paraInit = true;
+      paraCurX = paraTargetX; paraCurY = paraTargetY;
+      paraVX = 0; paraVY = 0;
+      applyParallax();
+    }
+    if (!paraFrame) { paraLast = 0; paraFrame = requestAnimationFrame(parallaxTick); }
+  }
+  function setParallaxTarget(x, y) {
+    if (!finePointer.matches || reducedMotion.matches) return;
+    paraTargetX = (0.5 - x / window.innerWidth) * PARALLAX * 2;
+    paraTargetY = (0.5 - y / window.innerHeight) * PARALLAX * 2;
+    startParallax();
+  }
+  function recenterParallax() {
+    paraTargetX = 0; paraTargetY = 0;
+    if (paraInit) startParallax();
+  }
+  document.addEventListener('pointermove', event => {
+    setParallaxTarget(event.clientX, event.clientY);
+  }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', recenterParallax);
+  reducedMotion.addEventListener('change', () => {
+    if (!reducedMotion.matches) return;
+    paraTargetX = 0; paraTargetY = 0;
+    paraCurX = 0; paraCurY = 0; paraVX = 0; paraVY = 0;
+    if (paraFrame) cancelAnimationFrame(paraFrame);
+    paraFrame = 0; paraInit = false;
+    applyParallax();
+  });
 })();

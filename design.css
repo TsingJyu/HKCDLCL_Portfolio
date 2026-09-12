@@ -33,7 +33,7 @@ section[id]{scroll-margin-top:100px}
 .hero-kicker span:last-child{font-size:10px;letter-spacing:.14em}
 .letter-art{position:relative;width:min(100%,1060px);margin:12px auto 8px;isolation:isolate}
 .letter-art h1{margin:0;max-width:none;width:100%;font-size:inherit;line-height:1;letter-spacing:0}
-.letter-art h1 img{width:100%;height:auto;max-height:49svh;object-fit:contain;filter:drop-shadow(0 2px 1px rgba(53,55,46,.2)) drop-shadow(0 10px 6px rgba(40,43,34,.13)) drop-shadow(0 27px 18px rgba(40,43,34,.16));animation:letter-breathe 12s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
+.letter-art h1 img{width:100%;height:auto;max-height:49svh;object-fit:contain;filter:drop-shadow(0 2px 1px rgba(53,55,46,.22)) drop-shadow(0 10px 6px rgba(40,43,34,.12)) drop-shadow(0 27px 18px rgba(40,43,34,.14)) drop-shadow(0 52px 44px rgba(40,43,34,.16));animation:letter-breathe 12s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
 @keyframes letter-breathe{0%,100%{transform:translate3d(0,4px,0)}50%{transform:translate3d(0,-4px,0)}}
 .letter-art.motion-paused h1 img,.letter-art.preview-open h1 img,.letter-art.offscreen h1 img{animation-play-state:paused}
 .letter-art.offscreen h1 img{will-change:auto}
