@@ -440,7 +440,7 @@
 
   /* §16 wayfinding: highlight the section currently in view */
   const navLinks = Array.from(document.querySelectorAll('.nav-links a, .mobile-menu a'));
-  const sections = ['about', 'services', 'work', 'contact'].map(id => document.getElementById(id)).filter(Boolean);
+  const sections = ['about', 'services', 'education', 'work', 'contact'].map(id => document.getElementById(id)).filter(Boolean);
   let currentSection = '';
   function updateActiveSection() {
     const probe = window.innerHeight * 0.38;

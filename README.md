@@ -53,3 +53,12 @@
 - 所有靜態圖片皆有固有尺寸；資產、內部錨點、ID 唯一性與原外部連結檢查通過。
 - 本輪截圖：`hero-depth.png`、`gallery-hover.png`、`mobile-gallery-lightbox.png`、`the-way-back-project.png`、`the-way-back-poster-lightbox.png`、`mobile-the-way-back.png`，均位於網站資料夾上層。
 - 新作品來源片段為工作區 `work/the-way-back.html`，由 `work/build.py` 在重新生成時插入。不要只修改生成後的 HTML 而忽略此片段。
+
+## 2026-11-16 文教子頁
+
+- 新增 `education/` 靜態子頁，對應 `https://hkleading.com/education/`。
+- 首頁桌面及手機導航新增「文教」，連到核心業務下方的文教區塊；區塊按鈕及維港圖片可進入子頁。
+- 子頁導航提供「嶺先首頁」返回 `../`，保留高校合作及各項目導航。
+- 子頁 HTML、CSS、JS 及圖片均置於 `education/`，採用相對路徑，不需要新增建置工具。
+- 本次使用已確認的網站版本及已打碼的活動照；沒有複製未處理原圖、個人名片或內部資料清單。
+- 保留根目錄 `CNAME`（hkleading.com）及既有部署方式。提交並推送後，由原有 GitHub Pages 部署流程更新；子頁沒有獨立的 CNAME。
